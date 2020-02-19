@@ -1,0 +1,24 @@
+{
+  "name": "bill_share",
+  "version": "0.0.1",
+  "description": "Calculate and log bills split among multiple recipients",
+  "main": "src/index.js",
+  "scripts": {
+    "devstart": "nodemon --watch . --exec babel-node -r dotenv/config ./src"
+  },
+  "author": "devskope",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "4.1.1",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "express-pino-logger": "4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "nodemon": "^2.0.2"
+  }
+}
