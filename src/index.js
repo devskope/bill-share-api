@@ -2,8 +2,11 @@ import express from "express";
 import requestLogger from "express-pino-logger";
 
 import db from "./config/db";
+import ignoreFavicon from "./middlewares/ignore-favicon";
+import routes from "./routes";
 import log, { logger } from "./utils/logger";
 import { infoMessages } from "./utils/log-messages";
+import { nodeEnv } from "./utils/helpers";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -13,10 +16,12 @@ const initNotify = setInterval(
   900
 );
 
-app.use(requestLogger({ level: "info" }));
-
+app.use(ignoreFavicon);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(requestLogger({ level: "info" }));
+
+routes(app);
 
 db.connection.once("open", () => {
   log.prod(infoMessages.db.connected);
@@ -30,3 +35,5 @@ db.connection.once("open", () => {
 });
 
 db.connection.on("error", db.connectionErrors.other);
+
+export default app;
