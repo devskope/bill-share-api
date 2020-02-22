@@ -1,7 +1,9 @@
 /**
- *  @const {boolean} prodEnv returns true if app is running in a production environment
+ * Check if current NODE_ENV matches arg
+ * @param {string} arg string argument to check current NODE_ENV against
+ * @returns {boolean} match
  */
-export const prodEnv = process.env.NODE_ENV === "production";
+export const nodeEnv = arg => process.env.NODE_ENV === arg;
 
 /**
  * Sends an error response to the client

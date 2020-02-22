@@ -23,6 +23,10 @@ app.use(requestLogger({ level: "info" }));
 
 routes(app);
 
+if (!nodeEnv("test")) {
+  db.connect(process.env.DB_URL);
+}
+
 db.connection.once("open", () => {
   log.prod(infoMessages.db.connected);
 

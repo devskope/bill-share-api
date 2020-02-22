@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { prodEnv } from "../utils/helpers";
+import { nodeEnv } from "../utils/helpers";
 import log, { logger } from "../utils/logger";
 import { errorMessages } from "../utils/log-messages";
 
@@ -8,7 +8,7 @@ const { dbConnection } = errorMessages;
 const connectionErrors = {
   errCount: 0,
   initial(e) {
-    if (prodEnv) {
+    if (nodeEnv("production")) {
       log.prod(dbConnection.initial);
       logger.error(dbConnection.initial, e);
     } else {
@@ -19,7 +19,7 @@ const connectionErrors = {
   other(e) {
     connectionErrors.errCount += 1;
     if (connectionErrors.errCount > 1) {
-      if (prodEnv) {
+      if (nodeEnv("production")) {
         log.prod(dbConnection.other);
         logger.error(dbConnection.other + "%O", {
           ...e,
@@ -32,11 +32,16 @@ const connectionErrors = {
   }
 };
 
-mongoose
-  .connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .catch(connectionErrors.initial);
-
-export default { connection: mongoose.connection, connectionErrors };
+export default {
+  connect: url => {
+    mongoose
+      .connect(url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      .catch(connectionErrors.initial);
+  },
+  connection: mongoose.connection,
+  connectionErrors,
+  disconnect: () => mongoose.disconnect()
+};
