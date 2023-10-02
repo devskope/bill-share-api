@@ -10,7 +10,7 @@
   "author": "devskope",
   "license": "ISC",
   "dependencies": {
-    "debug": "4.1.1",
+    "debug": "4.3.1",
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "express-pino-logger": "4.0.0",
